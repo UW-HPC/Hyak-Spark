@@ -10,7 +10,24 @@
 # Description
 Sample scripts to run Spark jobs on Hyak
 
-# Interactive Job Submission
+# Mox
+## Prerequisites
+1) Add `export SPARK_HOME=/sw/contrib/spark` and `export PYTHONPATH=$SPARK_HOME/python/:$PYTHONPATH` to your .bashrc file.
+2) Get a build node: `srun -p build -c 1 --pty /bin/bash`
+3) Within the build node, load anaconda: `module load anaconda2_4.3.1`
+4) Download required package: `pip install py4j --user`
+
+### To replicate examples: 
+4) Create a new conda environment, e.g.: `conda create -n deeplearning keras tensorflow`
+5) Activate virtual env and download required packages:
+``` source activate deeplearning
+pip install py4j
+pip install nltk
+python -m nltk.downloader punkt
+```
+
+# Ikt
+## Interactive Job Submission
 1. Set $JAVA_HOME variable in your ~/.bashrc file to point to /sw/contrib/java/jdk1.8.0_111
 2. Download Spark into your home directory and unpack:
 ``` shell
