@@ -11,21 +11,23 @@ export PYTHONIOENCODING=utf8
 
 
 # Set up spark cluster
-scontrol show hostname > nodelist
+mkdir $HOME/tmp
+scontrol show hostname > $HOME/tmp/nodelist
 
-MASTER=$(head -n 1 nodelist)
-WORKERS=$(tail -n +2 nodelist)
+MASTER=$(head -n 1 $HOME/tmp/nodelist)
+WORKERS=$(tail -n +2 $HOME/tmp/nodelist)
 
 NETID=$(whoami)
 
-bash $SPARK_HOME/sbin/start-master.sh
-MASTER_URL=$(cat $SPARK_HOME/logs/spark-$NETID-org.apache.spark.deploy.master.Master-1-$MASTER.out | grep -o "spark://.*")
+LOG=$(bash $SPARK_HOME/sbin/start-master.sh)
+LOG_FILE=$(echo $LOG | grep -oPe "/sw/.*?$")
+
+cat $LOG_FILE | grep -oPe "spark://.*?$" > $HOME/tmp/master.url
+
 
 for worker in $WORKERS; do
-    ssh $worker
-    bash $SPARK_HOME/sbin/start-slave.sh $MASTER_URL
+    ssh $worker 'bash $SPARK_HOME/sbin/start-slave.sh $(cat $HOME/tmp/master.url)'
 done
 
-ssh $MASTER
 python split_words.py
 
