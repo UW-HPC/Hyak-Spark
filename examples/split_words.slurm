@@ -23,7 +23,7 @@ MASTER_URL=$(cat $SPARK_HOME/logs/spark-$NETID-org.apache.spark.deploy.master.Ma
 
 for worker in $WORKERS; do
     ssh $worker
-    bash $SPARK_HOME/sbin/start-slave $MASTER_URL
+    bash $SPARK_HOME/sbin/start-slave.sh $MASTER_URL
 done
 
 ssh $MASTER
