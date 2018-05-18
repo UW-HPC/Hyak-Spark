@@ -4,8 +4,8 @@
 # Scheduler Parameters                 #
 #SBATCH --job-name=Tokenize            #
 #SBATCH --nodes=2                      #
-#SBATCH --time=0:15:00                 #
-#SBATCH --mem=32G                      #
+#SBATCH --time=2:00:00                 #
+#SBATCH --mem=122G                     #
 ########################################
 
 ########################################
