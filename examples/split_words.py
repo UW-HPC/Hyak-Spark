@@ -2,9 +2,17 @@
 
 from pyspark import SparkContext
 from nltk.tokenize import word_tokenize
+from argparse import ArgumentParser
 
-sc = SparkContext()
-text = sc.textFile("/gscratch/stf/kearnsw/corpora/MSMARCO/train_v1.1.json")
+args = ArgumentParser()
+args.add_argument("-u", "--url", help="spark cluster URL")
+args.add_argument("-o", "--output", default="tokens.out", help="output file")
+opts = args.parse_args()
+
+
+print(opts.url)
+sc = SparkContext(opts.url, "Tokenizer")
+text = sc.textFile("/gscratch/stf/kearnsw/freebase-rdf-latest")
 tokens = text.flatMap(lambda line: word_tokenize(line))
-tokens.saveAsTextFile("tokens.out")
+tokens.saveAsTextFile("/gscratch/stf/kearnsw/{0}".format(opts.output))
 
